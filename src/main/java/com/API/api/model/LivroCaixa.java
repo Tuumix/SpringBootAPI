@@ -4,16 +4,15 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,36 +23,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "Usuarios")
-public class Usuarios {
+@Table(name = "livro_caixa")
+public class LivroCaixa {
 	
 	@Id
+	@Column(name = "id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(length = 30)
-	private String nome;
+	@JoinColumn(name = "id_cliente")
+	@ManyToOne(optional = false)
+	private Clientes id_cliente;
 	
-	@Column(name = "dataCadastro")
+	@Column(name = "dataLancamento", nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Calendar dataCadastro;
+	private Calendar dataLancamento;
 	
-	@Column(length = 15, nullable = false)
-	private String login;
+	@Column(name = "descricao", length = 50, nullable = false)
+	private String descricao;
 	
-	@Column(length = 10)
-	private String senha;
+	@Column(name = "tipo", length = 1, nullable = false)
+	private char tipo;
 	
-	@Column(length = 11)
-	private String telefone;
-	
-	@Column(length = 100)
-	private String email;
-	
-	@Column(length = 1)
-	private char perfil;
-	
-	@Column(length = 1)
-	@Enumerated(EnumType.STRING)
-	private Status status;
+	@Column(name = "valor", nullable = false, precision = 10, scale = 2)
+	private double valor;
 }

@@ -1,6 +1,6 @@
 package com.API.api.model;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,11 +28,12 @@ public class Clientes {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	
+	@Column(name = "nome", length = 30,  nullable = false)
 	private String nome;
+	
 	@Column(name = "datacadastro", length = 30, nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Date dataCadastro;
+	private Calendar dataCadastro;
 	
 	@Column(length = 14, nullable = false)
 	private String cpfCnpj;

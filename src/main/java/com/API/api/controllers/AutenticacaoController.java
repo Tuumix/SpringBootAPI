@@ -11,6 +11,7 @@ import com.API.api.model.Usuarios;
 import com.API.api.services.UsuarioService;
 
 import dtos.LoginInfoDTO;
+import enums.Status;
 
 @RestController
 public class AutenticacaoController {
@@ -21,7 +22,7 @@ public class AutenticacaoController {
 	@PostMapping("/login")
 	ResponseEntity<Usuarios> login(@RequestBody LoginInfoDTO login) {
 		Usuarios user = usuarioService.autenticar(login.getLogin(), login.getSenha());
-		if( user != null && user.getStatus() == 'A'){
+		if(user != null && user.getStatus() == Status.A)  {
 			return new ResponseEntity<Usuarios>(user, HttpStatus.OK);
 		} else
 			return new ResponseEntity<Usuarios>(user, HttpStatus.BAD_REQUEST);
