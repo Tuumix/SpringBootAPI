@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ContabilDTO {
+public class RelatorioDTO {
 	private int id;
 	private String nome;
 	private String cpf_cnpj;
 	private String telefone;
-	private List<Contabil> list;
+	private List<Contabil> Contabil;
 }

@@ -25,14 +25,12 @@ public class ClientesController {
 	@Autowired
 	private ClienteService clienteService;
 	
-	//Post done.
 	@PostMapping("/clientes")
 	ResponseEntity<Clientes> save(@RequestBody Clientes cli) {
 		Clientes aux = clienteService.save(cli);
 		return new ResponseEntity<Clientes>(aux, HttpStatus.OK);
 	}
 	
-	//Still need to check the error
 	@GetMapping("/clientes/{id}")
 	ResponseEntity<?> getAll(@PathVariable int id) {
 		Optional<Clientes> cliente = clienteService.findById(id);
@@ -54,6 +52,8 @@ public class ClientesController {
 	
 	@GetMapping("/clientes/search")
 	List<Clientes> getAll(@RequestBody ClienteFiltroDTO filtro) {
-		return clienteService.getData(filtro.getNome(), filtro.getCpfCnpj(), filtro.getCidade(), filtro.getUf());
+		if(!filtro.getNome().isBlank() && !filtro.getCpfCnpj().isBlank() && !filtro.getCidade().isBlank() && !filtro.getUf().isBlank())
+			return clienteService.getFilterByAnd(filtro.getNome(), filtro.getCpfCnpj(), filtro.getCidade(), filtro.getUf());
+		return clienteService.getFilter(filtro.getNome(), filtro.getCpfCnpj(), filtro.getCidade(), filtro.getUf());
 	}
 }

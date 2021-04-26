@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.API.api.model.Usuarios;
-import com.API.api.services.UsuarioService;
+import com.API.api.services.AutenticarService;
 
 import dtos.LoginInfoDTO;
 import enums.Status;
@@ -17,14 +17,14 @@ import enums.Status;
 public class AutenticacaoController {
 
 	@Autowired
-	UsuarioService usuarioService;	
+	AutenticarService autenticarService;	
 	
 	@PostMapping("/login")
-	ResponseEntity<Usuarios> login(@RequestBody LoginInfoDTO login) {
-		Usuarios user = usuarioService.autenticar(login.getLogin(), login.getSenha());
-		if(user != null && user.getStatus() == Status.A)  {
-			return new ResponseEntity<Usuarios>(user, HttpStatus.OK);
+	ResponseEntity<String> login(@RequestBody LoginInfoDTO login) {
+		Usuarios user = autenticarService.findByLoginAndSenha(login.getLogin(), login.getSenha());
+		if(user != null && user.getStatus() != Status.C)  {
+			return new ResponseEntity<String>("Logado com sucesso!", HttpStatus.OK);
 		} else
-			return new ResponseEntity<Usuarios>(user, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Usuário cancelado || Senha incorreta", HttpStatus.BAD_REQUEST);
 	}
 }

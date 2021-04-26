@@ -13,6 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import enums.Perfil;
 import enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +39,7 @@ public class Usuarios {
 	
 	@Column(name = "dataCadastro")
 	@Temporal(TemporalType.DATE)
+	@CreationTimestamp
 	private Calendar dataCadastro;
 	
 	@Column(length = 15, nullable = false)
@@ -51,7 +55,7 @@ public class Usuarios {
 	private String email;
 	
 	@Column(length = 1)
-	private char perfil;
+	private Perfil perfil;
 	
 	@Column(length = 1)
 	@Enumerated(EnumType.STRING)

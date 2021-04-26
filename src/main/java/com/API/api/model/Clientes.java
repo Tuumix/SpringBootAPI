@@ -11,7 +11,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 @Setter
 @Table(name = "Clientes")
 public class Clientes {
@@ -33,6 +37,7 @@ public class Clientes {
 	
 	@Column(name = "datacadastro", length = 30, nullable = false)
 	@Temporal(TemporalType.DATE)
+	@CreationTimestamp
 	private Calendar dataCadastro;
 	
 	@Column(length = 14, nullable = false)
