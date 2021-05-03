@@ -1,19 +1,36 @@
 package com.API.api.controllers;
 
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.API.api.model.Usuarios;
 import com.API.api.services.UsuarioService;
 
 import dtos.SearchDTO;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
 
 @RestController
 public class UsuarioController {
@@ -33,8 +50,21 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/usuarios")
-	ResponseEntity<Iterable<Usuarios>> getUsuarios() {
-		return ResponseEntity.ok(usuarioService.findAll());
+	String getUsuarios(@RequestParam String tipo) throws FileNotFoundException, JRException{
+		List<Usuarios> list = (List<Usuarios>) usuarioService.findAll();
+		File file = ResourceUtils.getFile("classpath:usuario.jrxml");
+		JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
+		Map<String, Object>  map = new HashMap<>();
+		map.put("Creted by", "Lindo");
+		JasperPrint jasperPrint  = JasperFillManager.fillReport(jasperReport, map, dataSource);
+		
+		if(tipo.equals("html"))
+			JasperExportManager.exportReportToHtmlFile(jasperPrint, "C:\\" + "usuariosHTML.html");
+		else
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\" + "usuariosRelatorio.pdf");
+
+		return "";
 	}
 	
 	@GetMapping("/usuarios/{id}")
